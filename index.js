@@ -7,7 +7,7 @@ const cors = require('cors');
 server.use(cors())
 
 
-sserver.use('/api/code-blocks', async (req, res) => {
+server.use('/api/code-blocks', async (req, res) => {
   console.log('Got to /api/code-blocks')
    try {
  
