@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server();
 
 console.log("websocket started on port" , wss.options.port);
 let lastMessage = null;
