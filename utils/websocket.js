@@ -5,8 +5,9 @@ console.log('WebSocket server started on ws://localhost:8080');
 let lastMessage = null;
 let rooms = {};
 
-
+ 
 wss.on('connection', function connection(ws) {
+  console.log('Client connected');
   ws.on('message', function message(data) {
     const message = JSON.parse(data.toString());
 
