@@ -37,7 +37,7 @@ const startServer = async () => {
     server.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
-    //await connectDB();
+    await connectDB();
   } catch (error) {
     console.error('Error starting server:', error);
     process.exit(1); // Exit on error
