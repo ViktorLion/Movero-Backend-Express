@@ -24,6 +24,12 @@ server.use('/api/test', async (req, res) => {
   console.log('test')
  })
 
+ 
+server.use('/', async (req, res) => {
+  res.send('Hello World')
+  console.log('test')
+ })
+
 // Create Express server 
 const startServer = async () => {
   try {
@@ -31,7 +37,7 @@ const startServer = async () => {
     server.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
-    await connectDB();
+    //await connectDB();
   } catch (error) {
     console.error('Error starting server:', error);
     process.exit(1); // Exit on error
