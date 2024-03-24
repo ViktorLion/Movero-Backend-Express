@@ -1,14 +1,15 @@
-const WebSocket = require('ws');
-
-const wss = new WebSocket.Server({ port: 6000, path: "/ws" });
-
-console.log("websocket started on port" , wss.options.port);
+const express = require('express');
+const { connectDB } = require('./db');
+const app = express(); // Create Express server
+const cors = require('cors');
+const mongoose = require('mongoose');
+const enableWs = require('express-ws')
+const wsInstance = enableWs(app)
 let lastMessage = null;
 let rooms = {};
 
- 
-wss.on('connection', function connection(ws) {
-  console.log('Client connected');
+
+app.ws('/ws', (ws, req) => {
   ws.on('message', function message(data) {
     const message = JSON.parse(data.toString());
 
@@ -38,7 +39,7 @@ wss.on('connection', function connection(ws) {
     }
   
     // Broadcast the message to all connected clients
-    wss.clients.forEach(client => {
+    wsInstance.getWss().clients.forEach(client => {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
       }
@@ -61,6 +62,50 @@ wss.on('connection', function connection(ws) {
       console.log('Student disconnected');
     }
   });
-});
+})
 
-module.exports = { wss }; // Export wss for use in server.js
+
+
+app.use(cors())
+app.use('/api/code-blocks', async (req, res) => {
+ console.log('Got to /api/code-blocks')
+  try {
+
+    const codeBlockSchema = new mongoose.Schema({
+      id: { type: String, required: true },  
+      title: { type: String, required: true },
+      code: { type: String, required: true },
+      corectCode: { type: String, required: true },
+    });
+    const model = mongoose.model('CodeBlock', codeBlockSchema)
+
+    const codeBlocks = await model.find({}); // Fetch all code blocks
+
+    res.status(200).json(codeBlocks);
+  } catch (error) {
+    console.error('Error fetching code blocks:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+
+app.use('/api/test', async (req, res) => {
+  console.log('test')
+ })
+
+// Create Express server 
+const startServer = async () => {
+  try {
+    const PORT = process.env.PORT || 3010; // Set your desired port here
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+    await connectDB();
+  } catch (error) {
+    console.error('Error starting server:', error);
+    process.exit(1); // Exit on error
+  }
+};
+
+
+startServer();
