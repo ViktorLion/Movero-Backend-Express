@@ -33,7 +33,7 @@ server.use('/api/test', async (req, res) => {
 // Create Express server 
 const startServer = async () => {
   try {
-    const PORT = process.env.PORT || 3010; // Set your desired port here
+    const PORT = process.env.PORT || 5000; // Set your desired port here
     server.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
