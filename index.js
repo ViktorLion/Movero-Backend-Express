@@ -109,6 +109,7 @@ app2.ws('/ws', (ws, req) => {
     }
   });
 })
-app2. listen(5001, () => {
+app2.use(cors())
+app2.listen(5001, () => {
   console.log(`Ws listening on port ${5001}`);
 });
