@@ -64,8 +64,6 @@ app.ws('/ws', (ws, req) => {
   });
 })
 
-
-
 app.use(cors())
 app.use('/api/code-blocks', async (req, res) => {
  console.log('Got to /api/code-blocks')
