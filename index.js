@@ -109,6 +109,13 @@ app2.ws('/ws', (ws, req) => {
     }
   });
 })
+
+// Middleware to set headers for WebSocket requests
+app2.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 app2.use(cors())
 app2.listen(5001, () => {
   console.log(`Ws listening on port ${5001}`);
